@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+Route::get('auth/callback', 'Auth\LoginController@handleProviderCallback');
+
+
+Route::group(['prefix' => 'repository'], function () {
+    Route::get('', 'RepositoryController@index')->name('repository.index');
+    Route::get('detail', 'RepositoryController@detail')->name('repository.detail');
+    Route::get('convert', 'RepositoryController@convert')->name('repository.convert');
+});
