@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Services\RepositoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class RepositoryController
 {
@@ -44,12 +45,19 @@ class RepositoryController
 
     /**
      * @param Request $request
+     * @return mixed
      */
     public function convert(Request $request) {
         $repoFullName = $request->get('r');
         $fileName = $request->get('f');
         $downloadUrl = "https://raw.githubusercontent.com/{$repoFullName}/master/{$fileName}";
-        $this->repositoryService->convert($downloadUrl, $request->session()->get('token'));
+        $pdfData = $this->repositoryService->convert($downloadUrl, $request->session()->get('token'));
+
+        $filename = 'out.pdf'; // TODO
+        return Response::make($pdfData, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+        ]);
     }
 
 }

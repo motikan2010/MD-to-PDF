@@ -8,12 +8,14 @@ class RepositoryService
 {
 
     private $httpService;
+    private $convertService;
 
     static $githubApiUrl = 'https://api.github.com';
 
-    public function __construct(HttpService $httpService)
+    public function __construct(HttpService $httpService, ConvertService $convertService)
     {
         $this->httpService = $httpService;
+        $this->convertService = $convertService;
     }
 
     /**
@@ -68,12 +70,12 @@ class RepositoryService
      *
      * @param $downloadUrl
      * @param string $token
+     * @return string|null
      */
     public function convert($downloadUrl, string $token) {
         $headers = $this->httpService->getAuthHeader($token);
         $contentBody = $this->getContentsBody($downloadUrl, $headers);
-        // TODO
-
+        return $this->convertService->convertMdToPdf($contentBody);
     }
 
     /**

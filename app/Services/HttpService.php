@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class HttpService
 {
@@ -15,7 +16,6 @@ class HttpService
      * @param string $url
      * @param array $headers
      * @return \Psr\Http\Message\StreamInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $url, array $headers) {
         $urlInfo = parse_url($url);
@@ -24,7 +24,11 @@ class HttpService
             'headers' => $headers
         ];
         $query = (array_key_exists('query', $urlInfo)) ? "?{$urlInfo['query']}" : '';
-        $response = $client->request('GET', $urlInfo['path'] . $query , $options);
+        try {
+            $response = $client->request('GET', $urlInfo['path'] . $query , $options);
+        } catch (GuzzleException $e) {
+            // TODO
+        }
         return $response->getBody();
     }
 
