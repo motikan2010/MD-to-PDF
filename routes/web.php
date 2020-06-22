@@ -24,3 +24,10 @@ Route::group(['prefix' => 'repository'], function () {
     Route::get('detail', 'RepositoryController@detail')->name('repository.detail');
     Route::get('convert', 'RepositoryController@convert')->name('repository.convert');
 });
+
+/**
+ * API
+ */
+Route::group(['prefix' => 'api', 'namespace' => 'Api'], function (){
+    Route::get('repository/detail', 'RepositoryController@detail');
+});
