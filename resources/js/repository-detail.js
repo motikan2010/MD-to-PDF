@@ -1,20 +1,17 @@
 import './bootstrap'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import RepositoryFilePage from './components/RepositoryFilePage'
+import RepositoryFile from './pages/RepositoryFile'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-    mode: 'history',
-    scrollBehavior () {
-        return { x: 0, y: 0 }
-    }
+    mode: 'history'
 })
 
 new Vue({
     el: '#app',
     router,
-    components: { RepositoryFilePage },
-    template: '<RepositoryFilePage />'
+    components: { RepositoryFile },
+    template: '<RepositoryFile />'
 })

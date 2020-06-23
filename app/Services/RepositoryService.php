@@ -46,16 +46,16 @@ class RepositoryService
      * Get file list
      *
      * @param string $repoFullName
+     * @param string $fileName
      * @param string $token
      * @return array
      */
-    public function getFileList(string $repoFullName, string $token) {
+    public function getFileList(string $repoFullName, string $fileName, string $token) {
         $headers = $this->httpService->getAuthHeader($token);
-        $repositoryFileList = json_decode($this->httpService->get(self::$githubApiUrl . "/repos/{$repoFullName}/contents/", $headers)->getContents(), true);
+        $repositoryFileList = json_decode($this->httpService->get(self::$githubApiUrl . "/repos/{$repoFullName}/contents/{$fileName}", $headers)->getContents(), true);
 
         $fileList = [];
         foreach ( $repositoryFileList as $repositoryFile ) {
-            // var_dump($repositoryFile); // TODO
             $fileList[] = [
                 'name' => $repositoryFile['name'],
                 'type' => $repositoryFile['type'],

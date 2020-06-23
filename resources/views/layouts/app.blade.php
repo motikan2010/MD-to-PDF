@@ -52,6 +52,10 @@
     .m-b-md {
       margin-bottom: 30px;
     }
+
+    .content {
+      margin-top: 100px;
+    }
   </style>
 </head>
 <body>

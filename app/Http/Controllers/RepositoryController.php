@@ -31,16 +31,10 @@ class RepositoryController
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function detail(Request $request) {
-        $repoFullName = $request->get('r');
-        $fileInfo = $this->repositoryService->getFileList($repoFullName, $request->session()->get('token'));
-        return view('repository.detail')->with('result', [
-            'repository_name' => $repoFullName,
-            'repository_info' => $fileInfo,
-        ]);
+    public function detail() {
+        return view('repository.detail');
     }
 
     /**
