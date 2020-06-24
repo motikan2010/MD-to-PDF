@@ -26,10 +26,10 @@ class HttpService
         $query = (array_key_exists('query', $urlInfo)) ? "?{$urlInfo['query']}" : '';
         try {
             $response = $client->request('GET', $urlInfo['path'] . $query , $options);
+            return $response->getBody();
         } catch (GuzzleException $e) {
             // TODO
         }
-        return $response->getBody();
     }
 
     /**

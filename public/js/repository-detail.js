@@ -1934,7 +1934,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1942,28 +1941,29 @@ __webpack_require__.r(__webpack_exports__);
   },
   name: 'TreeItem',
   props: {
-    item: Object
+    item: Object,
+    fullName: String,
+    isInitOpen: Boolean
   },
   data: function data() {
     return {
-      isOpen: true
+      isOpen: false
     };
   },
   computed: {
     isFolder: function isFolder() {
-      return this.item.children && this.item.children.length;
+      return this.item.children;
+    },
+    isOpenState: function isOpenState() {
+      return this.isInitOpen || this.isOpen;
     }
   },
   methods: {
-    toggle: function toggle() {
+    toggle: function toggle(item) {
+      this.$emit("add-item", item);
+
       if (this.isFolder) {
         this.isOpen = !this.isOpen;
-      }
-    },
-    makeFolder: function makeFolder() {
-      if (!this.isFolder) {
-        this.$emit("make-folder", this.item);
-        this.isOpen = true;
       }
     }
   }
@@ -1995,12 +1995,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2009,7 +2003,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {},
   data: function data() {
     return {
-      fileInfoList: [],
       treeData: {}
     };
   },
@@ -2018,7 +2011,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response, children, i;
+        var response, fileInfoList;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2032,25 +2025,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 response = _context.sent;
-                _this.fileInfoList = response.data;
-                children = [];
-
-                for (i = 0; i < _this.fileInfoList.length; i++) {
-                  children.push({
-                    name: _this.fileInfoList[i].name
-                  });
-                }
-
+                fileInfoList = response.data;
                 _this.treeData = {
                   name: _this.$route.query.r,
-                  children: children
+                  fullName: '',
+                  children: _this.getChildren(fileInfoList)
                 };
-                console.log({
-                  name: _this.$route.query.r,
-                  children: children
-                });
 
-              case 8:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -2058,11 +2040,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    openFileList: function openFileList(fileInfo) {
+    addItem: function addItem(item) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var response;
+        var response, fileInfoList;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -2071,14 +2053,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return axios.get('/api/repository/detail', {
                   params: {
                     r: _this2.$route.query.r,
-                    f: fileInfo.name
+                    f: item.fullName
                   }
                 });
 
               case 2:
                 response = _context2.sent;
+                fileInfoList = response.data;
+                item.children = _this2.getChildren(fileInfoList, item.fullName);
 
-              case 3:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -2086,14 +2070,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    makeFolder: function makeFolder(item) {
-      Vue.set(item, "children", []);
-      this.addItem(item);
-    },
-    addItem: function addItem(item) {
-      item.children.push({
-        name: "new stuff"
-      });
+    getChildren: function getChildren(fileInfoList) {
+      var fullName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var children = [];
+
+      for (var i = 0; i < fileInfoList.length; i++) {
+        var file = {
+          name: fileInfoList[i].name,
+          fullName: fullName + '/' + fileInfoList[i].name
+        };
+
+        if (fileInfoList[i].type === 'dir') {
+          file.children = [];
+        }
+
+        children.push(file);
+      }
+
+      return children;
     }
   },
   watch: {
@@ -20465,15 +20459,21 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("li", [
     _c(
-      "div",
+      "span",
       {
         class: { bold: _vm.isFolder },
-        on: { click: _vm.toggle, dblclick: _vm.makeFolder }
+        on: {
+          click: function($event) {
+            return _vm.toggle(_vm.item)
+          }
+        }
       },
       [
         _vm._v("\n    " + _vm._s(_vm.item.name) + "\n    "),
         _vm.isFolder
-          ? _c("span", [_vm._v("[" + _vm._s(_vm.isOpen ? "-" : "+") + "]")])
+          ? _c("span", [
+              _vm._v("[" + _vm._s(_vm.isOpenState ? "-" : "+") + "]")
+            ])
           : _vm._e()
       ]
     ),
@@ -20486,42 +20486,28 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.isOpen,
-                expression: "isOpen"
+                value: _vm.isOpenState,
+                expression: "isOpenState"
               }
             ]
           },
-          [
-            _vm._l(_vm.item.children, function(child, index) {
-              return _c("TreeItem", {
-                key: index,
-                staticClass: "item",
-                attrs: { item: child },
-                on: {
-                  "make-folder": function($event) {
-                    return _vm.$emit("make-folder", $event)
-                  },
-                  "add-item": function($event) {
-                    return _vm.$emit("add-item", $event)
-                  }
-                }
-              })
-            }),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                staticClass: "add",
-                on: {
-                  click: function($event) {
-                    return _vm.$emit("add-item", _vm.item)
-                  }
-                }
+          _vm._l(_vm.item.children, function(child, index) {
+            return _c("TreeItem", {
+              key: index,
+              staticClass: "item",
+              attrs: {
+                item: child,
+                fullName: _vm.item.fullName + "/" + child.name,
+                isInitOpen: false
               },
-              [_vm._v("+")]
-            )
-          ],
-          2
+              on: {
+                "add-item": function($event) {
+                  return _vm.$emit("add-item", $event)
+                }
+              }
+            })
+          }),
+          1
         )
       : _vm._e()
   ])
@@ -20548,11 +20534,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("TreeItem", {
-    staticClass: "item",
-    attrs: { item: _vm.treeData },
-    on: { "make-folder": _vm.makeFolder, "add-item": _vm.addItem }
-  })
+  return _c(
+    "div",
+    [
+      _c("TreeItem", {
+        staticClass: "item",
+        attrs: { item: _vm.treeData, isInitOpen: true },
+        on: { "add-item": _vm.addItem }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

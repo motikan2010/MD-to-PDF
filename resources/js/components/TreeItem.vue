@@ -1,13 +1,12 @@
 <template>
   <li>
-    <div :class="{bold: isFolder}" @click="toggle" @dblclick="makeFolder">
+    <span :class="{bold: isFolder}" @click="toggle(item)">
       {{ item.name }}
-      <span v-if="isFolder">[{{ isOpen ? '-' : '+' }}]</span>
-    </div>
-    <ul v-show="isOpen" v-if="isFolder">
-      <TreeItem class="item" v-for="(child, index) in item.children" :key="index" :item="child"
-                @make-folder="$emit('make-folder', $event)" @add-item="$emit('add-item', $event)" />
-      <li class="add" @click="$emit('add-item', item)">+</li>
+      <span v-if="isFolder">[{{ isOpenState ? '-' : '+' }}]</span>
+    </span>
+    <ul v-show="isOpenState" v-if="isFolder">
+      <TreeItem class="item" v-for="(child, index) in item.children" :key="index"
+                :item="child" :fullName="item.fullName + '/' + child.name" :isInitOpen="false" @add-item="$emit('add-item', $event)" />
     </ul>
   </li>
 </template>
@@ -21,28 +20,28 @@
     },
     name: 'TreeItem',
     props: {
-      item: Object
+      item: Object,
+      fullName: String,
+      isInitOpen: Boolean
     },
     data: function() {
       return {
-        isOpen: true
+        isOpen: false
       };
     },
     computed: {
       isFolder: function() {
-        return this.item.children && this.item.children.length;
+        return this.item.children
+      },
+      isOpenState() {
+        return (this.isInitOpen || this.isOpen)
       }
     },
     methods: {
-      toggle: function() {
+      toggle: function(item) {
+        this.$emit("add-item", item);
         if (this.isFolder) {
           this.isOpen = !this.isOpen;
-        }
-      },
-      makeFolder: function() {
-        if (!this.isFolder) {
-          this.$emit("make-folder", this.item);
-          this.isOpen = true;
         }
       }
     }

@@ -1,13 +1,7 @@
 <template>
-<!--
   <div>
-    <li v-for="fileInfo in fileInfoList" :key="fileInfo.name">
-      <span v-if="fileInfo.type === 'dir'"><button v-on:click="openFileList(fileInfo)">{{ fileInfo.name }}</button></span>
-      <span v-if="fileInfo.type === 'file'">{{ fileInfo.name }}</span>
-    </li>
+    <TreeItem class="item" :item="treeData" :isInitOpen="true" @add-item="addItem" />
   </div>
--->
-  <TreeItem class="item" :item="treeData" @make-folder="makeFolder" @add-item="addItem" />
 </template>
 
 <script>
@@ -20,50 +14,38 @@
     props: {},
     data () {
       return {
-        fileInfoList: [],
         treeData: {}
       }
     },
     methods: {
       async fetchFileList () {
-        const response = await axios.get('/api/repository/detail', {
-          params: {
-            r: this.$route.query.r
-          }
-        })
-        this.fileInfoList = response.data
+        const response = await axios.get('/api/repository/detail', {params: {r: this.$route.query.r}})
+        let fileInfoList = response.data
 
-        let children = []
-        for (let i=0; i < this.fileInfoList.length; i++) {
-          children.push({name: this.fileInfoList[i].name})
-        }
         this.treeData = {
           name: this.$route.query.r,
-          children: children
+          fullName: '',
+          children: this.getChildren(fileInfoList)
         };
-
-        console.log({
-          name: this.$route.query.r,
-          children: children
-        })
-
       },
-      async openFileList(fileInfo) {
-        const response = await axios.get('/api/repository/detail', {
-          params: {
-            r: this.$route.query.r,
-            f: fileInfo.name
+      async addItem(item) {
+        const response = await axios.get('/api/repository/detail', {params: {r: this.$route.query.r, f: item.fullName}})
+        let fileInfoList = response.data
+        item.children = this.getChildren(fileInfoList, item.fullName)
+      },
+      getChildren(fileInfoList, fullName = '') {
+        let children = []
+        for ( let i=0; i < fileInfoList.length; i++ ) {
+          let file = {
+            name: fileInfoList[i].name,
+            fullName: fullName + '/' + fileInfoList[i].name
           }
-        })
-      },
-      makeFolder: function(item) {
-        Vue.set(item, "children", []);
-        this.addItem(item);
-      },
-      addItem: function(item) {
-        item.children.push({
-          name: "new stuff"
-        });
+          if ( fileInfoList[i].type === 'dir' ) {
+            file.children = []
+          }
+          children.push(file)
+        }
+        return children
       }
     },
     watch: {
