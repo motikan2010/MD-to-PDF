@@ -4,6 +4,8 @@
 namespace App\Services;
 
 
+use LynX39\LaraPdfMerger\Facades\PdfMerger;
+
 class RepositoryService
 {
 
@@ -65,17 +67,14 @@ class RepositoryService
         return $fileList;
     }
 
-    /**
-     * Convert MD to PDF
-     *
-     * @param $downloadUrl
-     * @param string $token
-     * @return string|null
-     */
-    public function convert($downloadUrl, string $token) {
+    public function multiConvert(string $repoFullName, array $fileNameList, string $token) {
+        $mdData = '';
         $headers = $this->httpService->getAuthHeader($token);
-        $contentBody = $this->getContentsBody($downloadUrl, $headers);
-        return $this->convertService->convertMdToPdf($contentBody);
+        foreach ( $fileNameList as $fileName ) {
+            $downloadUrl = "https://raw.githubusercontent.com/{$repoFullName}/master{$fileName}";
+            $mdData .= $this->getContentsBody($downloadUrl, $headers);
+        }
+        return $this->convertService->convertMdToPdf($mdData);
     }
 
     /**

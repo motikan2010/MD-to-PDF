@@ -4,6 +4,7 @@
       {{ item.name }}
       <span v-if="isFolder">[{{ isOpenState ? '-' : '+' }}]</span>
     </span>
+    <span v-if="!isFolder"><input type="checkbox" v-model="item.isConvert" /></span>
     <ul v-show="isOpenState" v-if="isFolder">
       <TreeItem class="item" v-for="(child, index) in item.children" :key="index"
                 :item="child" :fullName="item.fullName + '/' + child.name" :isInitOpen="false" @add-item="$emit('add-item', $event)" />

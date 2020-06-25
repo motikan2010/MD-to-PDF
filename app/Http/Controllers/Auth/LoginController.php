@@ -19,8 +19,8 @@ class LoginController extends Controller
     public function redirectToProvider()
     {
         return Socialite::driver('github')
-            //->setScopes(['read:user', 'repo'])
-            ->setScopes(['public_repo'])
+            ->setScopes(['read:user', 'repo'])
+            //->setScopes(['public_repo'])
             ->redirect();
     }
 

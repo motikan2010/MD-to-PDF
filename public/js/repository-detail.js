@@ -1934,6 +1934,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -1995,6 +1996,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2029,6 +2032,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.treeData = {
                   name: _this.$route.query.r,
                   fullName: '',
+                  isConvert: false,
                   children: _this.getChildren(fileInfoList)
                 };
 
@@ -2077,7 +2081,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       for (var i = 0; i < fileInfoList.length; i++) {
         var file = {
           name: fileInfoList[i].name,
-          fullName: fullName + '/' + fileInfoList[i].name
+          fullName: fullName + '/' + fileInfoList[i].name,
+          isConvert: false
         };
 
         if (fileInfoList[i].type === 'dir') {
@@ -2088,27 +2093,81 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return children;
+    },
+    convertMarkdown: function convertMarkdown() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var convertFiles, response, url, link;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                convertFiles = _this3.getConvertFileList(_this3.treeData);
+                _context3.next = 3;
+                return axios.post('/api/repository/convert', {
+                  r: _this3.$route.query.r,
+                  f: convertFiles
+                }, {
+                  responseType: 'arraybuffer',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/pdf'
+                  }
+                });
+
+              case 3:
+                response = _context3.sent;
+                url = URL.createObjectURL(new Blob([response.data]));
+                link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'file.pdf'); //ここらへんは適当に設定する
+
+                document.body.appendChild(link);
+                link.click();
+                link.revokeObjectURL();
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    getConvertFileList: function getConvertFileList(treeData) {
+      if (treeData.isConvert) {
+        return treeData.fullName;
+      }
+
+      var targetFiles = [];
+
+      for (var i in treeData.children) {
+        targetFiles = targetFiles.concat(this.getConvertFileList(treeData.children[i]));
+      }
+
+      return targetFiles;
     }
   },
   watch: {
     $route: {
       handler: function handler() {
-        var _this3 = this;
+        var _this4 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
             while (1) {
-              switch (_context3.prev = _context3.next) {
+              switch (_context4.prev = _context4.next) {
                 case 0:
-                  _context3.next = 2;
-                  return _this3.fetchFileList();
+                  _context4.next = 2;
+                  return _this4.fetchFileList();
 
                 case 2:
                 case "end":
-                  return _context3.stop();
+                  return _context4.stop();
               }
             }
-          }, _callee3);
+          }, _callee4);
         }))();
       },
       immediate: true
@@ -20478,6 +20537,51 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
+    !_vm.isFolder
+      ? _c("span", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.item.isConvert,
+                expression: "item.isConvert"
+              }
+            ],
+            attrs: { type: "checkbox" },
+            domProps: {
+              checked: Array.isArray(_vm.item.isConvert)
+                ? _vm._i(_vm.item.isConvert, null) > -1
+                : _vm.item.isConvert
+            },
+            on: {
+              change: function($event) {
+                var $$a = _vm.item.isConvert,
+                  $$el = $event.target,
+                  $$c = $$el.checked ? true : false
+                if (Array.isArray($$a)) {
+                  var $$v = null,
+                    $$i = _vm._i($$a, $$v)
+                  if ($$el.checked) {
+                    $$i < 0 &&
+                      _vm.$set(_vm.item, "isConvert", $$a.concat([$$v]))
+                  } else {
+                    $$i > -1 &&
+                      _vm.$set(
+                        _vm.item,
+                        "isConvert",
+                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                      )
+                  }
+                } else {
+                  _vm.$set(_vm.item, "isConvert", $$c)
+                }
+              }
+            }
+          })
+        ])
+      : _vm._e(),
+    _vm._v(" "),
     _vm.isFolder
       ? _c(
           "ul",
@@ -20537,11 +20641,17 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("p", [
+        _c("button", { on: { click: _vm.convertMarkdown } }, [_vm._v("変換")])
+      ]),
+      _vm._v(" "),
       _c("TreeItem", {
         staticClass: "item",
         attrs: { item: _vm.treeData, isInitOpen: true },
         on: { "add-item": _vm.addItem }
-      })
+      }),
+      _vm._v(" "),
+      _c("pre", [_vm._v(_vm._s(_vm.treeData))])
     ],
     1
   )

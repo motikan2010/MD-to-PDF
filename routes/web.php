@@ -30,4 +30,5 @@ Route::group(['prefix' => 'repository'], function () {
  */
 Route::group(['prefix' => 'api', 'namespace' => 'Api'], function (){
     Route::get('repository/detail', 'RepositoryController@detail');
+    Route::post('repository/convert', 'RepositoryController@convert');
 });
