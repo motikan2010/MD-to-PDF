@@ -2103,7 +2103,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                convertFiles = _this3.getConvertFileList(_this3.treeData);
+                convertFiles = _this3.getConvertFileList(_this3.treeData); // Start download
+
                 _context3.next = 3;
                 return axios.post('/api/repository/convert', {
                   r: _this3.$route.query.r,
@@ -2121,8 +2122,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 url = URL.createObjectURL(new Blob([response.data]));
                 link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'file.pdf'); //ここらへんは適当に設定する
-
+                link.setAttribute('download', 'file.pdf');
                 document.body.appendChild(link);
                 link.click();
                 link.revokeObjectURL();
@@ -20649,9 +20649,7 @@ var render = function() {
         staticClass: "item",
         attrs: { item: _vm.treeData, isInitOpen: true },
         on: { "add-item": _vm.addItem }
-      }),
-      _vm._v(" "),
-      _c("pre", [_vm._v(_vm._s(_vm.treeData))])
+      })
     ],
     1
   )

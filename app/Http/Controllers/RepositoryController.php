@@ -45,7 +45,7 @@ class RepositoryController
         $repoFullName = $request->get('r');
         $fileName = $request->get('f');
         $downloadUrl = "https://raw.githubusercontent.com/{$repoFullName}/master/{$fileName}";
-        $pdfData = $this->repositoryService->convert($downloadUrl, $request->session()->get('token'));
+        $pdfData = $this->repositoryService->multiConvert($downloadUrl, $request->session()->get('token'));
 
         $filename = 'out.pdf'; // TODO
         return Response::make($pdfData, 200, [

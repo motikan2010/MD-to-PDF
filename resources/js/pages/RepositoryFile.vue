@@ -2,7 +2,7 @@
   <div>
     <p><button v-on:click="convertMarkdown">変換</button></p>
     <TreeItem class="item" :item="treeData" :isInitOpen="true" @add-item="addItem" />
-    <pre>{{ treeData }}</pre>
+    <!-- <pre>{{ treeData }}</pre> -->
   </div>
 </template>
 
