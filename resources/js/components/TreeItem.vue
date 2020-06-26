@@ -1,11 +1,11 @@
 <template>
-  <li>
-    <span :class="{bold: isFolder}" @click="toggle(item)">
-      {{ item.name }}
-      <span v-if="isFolder">[{{ isOpenState ? '-' : '+' }}]</span>
-    </span>
-    <span v-if="!isFolder"><input type="checkbox" v-model="item.isConvert" /></span>
-    <ul v-show="isOpenState" v-if="isFolder">
+  <li class="list-group-item">
+    <div :class="{bold: isFolder}">
+      <span v-if="!isFolder"><input type="checkbox" v-model="item.isConvert" /></span>
+      <label>{{ item.name }}</label>
+      <span v-if="isFolder"><button class="btn btn-light btn-sm" @click="toggle(item)">{{ isOpenState ? '-' : '+' }}</button></span>
+    </div>
+    <ul class="list-group" v-show="isOpenState" v-if="isFolder">
       <TreeItem class="item" v-for="(child, index) in item.children" :key="index"
                 :item="child" :fullName="item.fullName + '/' + child.name" :isInitOpen="false" @add-item="$emit('add-item', $event)" />
     </ul>

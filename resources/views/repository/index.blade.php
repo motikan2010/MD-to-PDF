@@ -2,9 +2,9 @@
 
 @section('content')
 
-  <ul>
+  <ul class="list-group">
     @foreach ( $result['repository_list'] as $repository )
-      <li><a href="{{ route('repository.detail', ['r' => $repository['full_name']]) }}">{{ $repository['full_name'] }}</a></li>
+      <li class="list-group-item"><a href="{{ route('repository.detail', ['r' => $repository['full_name']]) }}">{{ $repository['full_name'] }}</a></li>
     @endforeach
   </ul>
 

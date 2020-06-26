@@ -1998,6 +1998,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -20516,71 +20522,72 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", [
-    _c(
-      "span",
-      {
-        class: { bold: _vm.isFolder },
-        on: {
-          click: function($event) {
-            return _vm.toggle(_vm.item)
-          }
-        }
-      },
-      [
-        _vm._v("\n    " + _vm._s(_vm.item.name) + "\n    "),
-        _vm.isFolder
-          ? _c("span", [
-              _vm._v("[" + _vm._s(_vm.isOpenState ? "-" : "+") + "]")
-            ])
-          : _vm._e()
-      ]
-    ),
-    _vm._v(" "),
-    !_vm.isFolder
-      ? _c("span", [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.item.isConvert,
-                expression: "item.isConvert"
-              }
-            ],
-            attrs: { type: "checkbox" },
-            domProps: {
-              checked: Array.isArray(_vm.item.isConvert)
-                ? _vm._i(_vm.item.isConvert, null) > -1
-                : _vm.item.isConvert
-            },
-            on: {
-              change: function($event) {
-                var $$a = _vm.item.isConvert,
-                  $$el = $event.target,
-                  $$c = $$el.checked ? true : false
-                if (Array.isArray($$a)) {
-                  var $$v = null,
-                    $$i = _vm._i($$a, $$v)
-                  if ($$el.checked) {
-                    $$i < 0 &&
-                      _vm.$set(_vm.item, "isConvert", $$a.concat([$$v]))
+  return _c("li", { staticClass: "list-group-item" }, [
+    _c("div", { class: { bold: _vm.isFolder } }, [
+      !_vm.isFolder
+        ? _c("span", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.item.isConvert,
+                  expression: "item.isConvert"
+                }
+              ],
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.item.isConvert)
+                  ? _vm._i(_vm.item.isConvert, null) > -1
+                  : _vm.item.isConvert
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.item.isConvert,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(_vm.item, "isConvert", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.item,
+                          "isConvert",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
                   } else {
-                    $$i > -1 &&
-                      _vm.$set(
-                        _vm.item,
-                        "isConvert",
-                        $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                      )
+                    _vm.$set(_vm.item, "isConvert", $$c)
                   }
-                } else {
-                  _vm.$set(_vm.item, "isConvert", $$c)
                 }
               }
-            }
-          })
-        ])
-      : _vm._e(),
+            })
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("label", [_vm._v(_vm._s(_vm.item.name))]),
+      _vm._v(" "),
+      _vm.isFolder
+        ? _c("span", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-light btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.toggle(_vm.item)
+                  }
+                }
+              },
+              [_vm._v(_vm._s(_vm.isOpenState ? "-" : "+"))]
+            )
+          ])
+        : _vm._e()
+    ]),
     _vm._v(" "),
     _vm.isFolder
       ? _c(
@@ -20593,7 +20600,8 @@ var render = function() {
                 value: _vm.isOpenState,
                 expression: "isOpenState"
               }
-            ]
+            ],
+            staticClass: "list-group"
           },
           _vm._l(_vm.item.children, function(child, index) {
             return _c("TreeItem", {
@@ -20638,21 +20646,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("p", [
-        _c("button", { on: { click: _vm.convertMarkdown } }, [_vm._v("変換")])
+  return _c("div", { staticClass: "card-deck box-shadow mb-3" }, [
+    _c("div", { staticClass: "card mb-4 box-shadow" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.convertMarkdown }
+          },
+          [_vm._v("変換")]
+        )
       ]),
       _vm._v(" "),
-      _c("TreeItem", {
-        staticClass: "item",
-        attrs: { item: _vm.treeData, isInitOpen: true },
-        on: { "add-item": _vm.addItem }
-      })
-    ],
-    1
-  )
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("TreeItem", {
+            attrs: { item: _vm.treeData, isInitOpen: true },
+            on: { "add-item": _vm.addItem }
+          })
+        ],
+        1
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
