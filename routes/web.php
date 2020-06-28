@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('auth/callback', 'Auth\LoginController@handleProviderCallback');

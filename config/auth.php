@@ -66,6 +66,11 @@ return [
     */
 
     'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => null,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

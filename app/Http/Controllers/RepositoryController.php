@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Services\RepositoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class RepositoryController
 {
@@ -20,10 +19,14 @@ class RepositoryController
 
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function index(Request $request) {
-        $repositoryInfoList = $this->repositoryService->getRepositoryList($request->session()->get('token'));
+        $token = $request->session()->get('token');
+        if ( empty($token) ) {
+            return redirect(route('index'));
+        }
+        $repositoryInfoList = $this->repositoryService->getRepositoryList($token);
 
         return view('repository.index')->with('result', [
             'repository_list' => $repositoryInfoList,
@@ -35,23 +38,6 @@ class RepositoryController
      */
     public function detail() {
         return view('repository.detail');
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function convert(Request $request) {
-        $repoFullName = $request->get('r');
-        $fileName = $request->get('f');
-        $downloadUrl = "https://raw.githubusercontent.com/{$repoFullName}/master/{$fileName}";
-        $pdfData = $this->repositoryService->multiConvert($downloadUrl, $request->session()->get('token'));
-
-        $filename = 'out.pdf'; // TODO
-        return Response::make($pdfData, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
-        ]);
     }
 
 }
