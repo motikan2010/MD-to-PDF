@@ -22,7 +22,7 @@ class RepositoryController
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function index(Request $request) {
-        $token = $request->session()->get('token');
+        $token = $request->session()->get('user')['token'];
         if ( empty($token) ) {
             return redirect(route('index'));
         }

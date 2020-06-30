@@ -16,6 +16,7 @@ Route::get('/', function () {
 })->name('index');
 
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('auth/callback', 'Auth\LoginController@handleProviderCallback');
 
 

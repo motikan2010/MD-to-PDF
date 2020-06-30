@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -30,7 +31,16 @@ class LoginController extends Controller
     public function handleProviderCallback()
     {
         $user = Socialite::driver('github')->user();
-        Session::put('token', $user->token);
+        Session::put('user', ['name' => $user->getName(), 'token' => $user->token]);
         return redirect()->route('repository.index');
     }
+
+    /**
+     *
+     */
+    public function logout() {
+        Session::put('user', null);
+        return redirect()->route('repository.index');
+    }
+
 }

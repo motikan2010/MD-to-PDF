@@ -21,7 +21,7 @@ class RepositoryController
     public function detail(Request $request) {
         $repoFullName = $request->get('r');
         $fileName = $request->get('f');
-        $token = $request->session()->get('token');
+        $token = $request->session()->get('user')['token'];
         return $this->repositoryService->getFileList($repoFullName, ($fileName === null ? '' : $fileName), $token);
     }
 
@@ -29,7 +29,7 @@ class RepositoryController
         $repoFullName = $request->post('r');
         $convertFileNameList = $request->post('f');
 
-        $pdfData = $this->repositoryService->multiConvert($repoFullName, $convertFileNameList, $request->session()->get('token'));
+        $pdfData = $this->repositoryService->multiConvert($repoFullName, $convertFileNameList, $request->session()->get('user')['token']);
         $filename = 'out.pdf'; // TODO
         return Response::make($pdfData, 200, [
             'Content-Type' => 'application/pdf',

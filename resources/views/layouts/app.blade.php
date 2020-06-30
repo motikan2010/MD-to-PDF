@@ -13,10 +13,15 @@
 @endif
 <div class="container">
   <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-    <h5 class="my-0 mr-md-auto font-weight-normal">{{ config('app.name', '') }}</h5>
+    <a href="{{ route('index') }}" class="my-0 mr-md-auto navbar-brand d-flex"><strong>{{ config('app.name', '') }}</strong></a>
     <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="{{ route('repository.index') }}">Repository</a>
-      <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
+      @if( session('user') === null )
+        <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
+      @else
+        <span class="p-2 text-dark navbar-brand">{{ session('user')['name'] }}</span>
+        <a class="btn btn-outline-primary" href="{{ route('repository.index') }}">Repository</a>
+        <a class="btn btn-outline-danger" href="{{ route('logout') }}">Logout</a>
+      @endif
     </nav>
   </div>
   @yield('content')
