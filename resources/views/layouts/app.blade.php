@@ -8,15 +8,17 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-  <h5 class="my-0 mr-md-auto font-weight-normal">{{ config('app.name', '') }}</h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="{{ route('repository.index') }}">Repository</a>
-  </nav>
-  <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
-</div>
-
+@if( env('GITHUB_RIBBON') )
+  <a href="https://github.com/motikan2010/MD-to-PDF"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+@endif
 <div class="container">
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">{{ config('app.name', '') }}</h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-dark" href="{{ route('repository.index') }}">Repository</a>
+      <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
+    </nav>
+  </div>
   @yield('content')
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
