@@ -33,7 +33,7 @@ class RepositoryController
         $filename = 'out.pdf'; // TODO
         return Response::make($pdfData, 200, [
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$filename.'"'
+            'Content-Disposition' => "inline; filename=\"{$filename}\""
         ]);
     }
 

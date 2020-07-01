@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         $user = Socialite::driver('github')->user();
         Session::put('user', ['name' => $user->getName(), 'token' => $user->token]);
-        return redirect()->route('repository.index');
+        return redirect()->route('index');
     }
 
     /**
@@ -40,7 +40,7 @@ class LoginController extends Controller
      */
     public function logout() {
         Session::put('user', null);
-        return redirect()->route('repository.index');
+        return redirect()->route('index');
     }
 
 }
