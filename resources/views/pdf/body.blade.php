@@ -8,6 +8,11 @@
     max-width: 100%;
     height: auto;
   }
+  pre, code {
+    font-family: ipag, serif;
+    white-space: pre;
+    font-size: 0.9em;
+  }
 </style>
 <body>
 @foreach( $result['content_html_list'] as $i => $contentHtml )

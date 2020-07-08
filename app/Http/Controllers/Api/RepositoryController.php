@@ -37,6 +37,8 @@ class RepositoryController
     }
 
     /**
+     * Create PDF file.
+     *
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
