@@ -12,9 +12,15 @@
   <a href="https://github.com/motikan2010/MD-to-PDF"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 @endif
 <div class="container">
-  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+  <div class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4 mb-3 bg-white border-bottom box-shadow">
     <a href="{{ route('index') }}" class="my-0 mr-md-auto navbar-brand d-flex"><strong>{{ config('app.name', '') }}</strong></a>
-    <nav class="my-2 my-md-0 mr-md-3">
+    <nav class="col-md-7">
+      <form class="form-inline" action="{{ route('repository.detail') }}">
+        <input class="form-control mr-sm-1 col-md-8" type="text" name="r" value="{{ app('request')->input('r') }}" placeholder="Organization/Repository" />
+        <button class="btn btn-outline-success col-md-2" type="submit">Search</button>
+      </form>
+    </nav>
+    <nav class="col-md-5">
       @if( session('user') === null )
         <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
       @else

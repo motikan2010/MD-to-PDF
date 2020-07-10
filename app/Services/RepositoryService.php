@@ -49,8 +49,8 @@ class RepositoryService
      * @param string $token
      * @return array
      */
-    public function getFileList(string $repoFullName, string $fileName, string $token) {
-        $headers = $this->httpService->getAuthHeader($token);
+    public function getFileList(string $repoFullName, string $fileName, string $token = null) {
+        $headers = $token !== null ? $this->httpService->getAuthHeader($token) : [];
         $repositoryFileList = json_decode($this->httpService->get(self::$githubApiUrl . "/repos/{$repoFullName}/contents/{$fileName}", $headers)->getContents(), true);
 
         $fileList = [];
@@ -70,8 +70,8 @@ class RepositoryService
      * @param string $token
      * @return string|null
      */
-    public function multiConvert(string $repoFullName, array $fileNameList, string $token) {
-        $headers = $this->httpService->getAuthHeader($token);
+    public function multiConvert(string $repoFullName, array $fileNameList, string $token = null) {
+        $headers = $token !== null ? $this->httpService->getAuthHeader($token) : [];
         $mdBodyList = array_map(function ($fileName) use ($repoFullName, $headers) {
             return $this->getContentsBody("https://raw.githubusercontent.com/{$repoFullName}/master{$fileName}", $headers);
         }, $fileNameList);
