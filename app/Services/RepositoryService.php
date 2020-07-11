@@ -53,15 +53,12 @@ class RepositoryService
         $headers = $token !== null ? $this->httpService->getAuthHeader($token) : [];
         $repositoryFileList = json_decode($this->httpService->get(self::$githubApiUrl . "/repos/{$repoFullName}/contents/{$fileName}", $headers)->getContents(), true);
 
-        $fileList = [];
-        foreach ( $repositoryFileList as $repositoryFile ) {
-            $fileList[] = [
+        return array_map(function ($repositoryFile) {
+            return [
                 'name' => $repositoryFile['name'],
                 'type' => $repositoryFile['type'],
             ];
-        }
-
-        return $fileList;
+        }, $repositoryFileList);
     }
 
     /**
@@ -80,6 +77,8 @@ class RepositoryService
     }
 
     /**
+     * Get file body from GitHub
+     *
      * @param $downloadUrl
      * @param $authHeader
      * @return string
