@@ -12,24 +12,39 @@
   <a href="https://github.com/motikan2010/MD-to-PDF"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 @endif
 <div class="container">
-  <div class="d-flex flex-column flex-md-row align-items-center p-2 px-md-4 mb-3 bg-white border-bottom box-shadow">
+
+  <nav class="navbar navbar-expand-md bg-white border-bottom box-shadow">
     <a href="{{ route('index') }}" class="my-0 mr-md-auto navbar-brand d-flex"><strong>{{ config('app.name', '') }}</strong></a>
-    <nav class="col-md-7">
-      <form class="form-inline" action="{{ route('repository.detail') }}">
-        <input class="form-control mr-sm-1 col-md-8" type="text" name="r" value="{{ app('request')->input('r') }}" placeholder="Organization/Repository" />
-        <button class="btn btn-outline-success col-md-2" type="submit">Search</button>
-      </form>
-    </nav>
-    <nav class="col-md-5">
-      @if( session('user') === null )
-        <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
-      @else
-        <span class="p-2 text-dark navbar-brand">{{ session('user')['name'] }}</span>
-        <a class="btn btn-outline-primary" href="{{ route('repository.index') }}">Repository</a>
-        <a class="btn btn-outline-danger" href="{{ route('logout') }}">Logout</a>
-      @endif
-    </nav>
-  </div>
+
+    <div class="navbar-collapse collapse">
+      <div class="ml-5 col-md-8">
+        <form class="form-inline mx-2 my-auto d-inline" action="{{ route('repository.detail') }}">
+          <input class="form-control w-75" type="text" name="r" value="{{ app('request')->input('r') }}" placeholder="GitHub Organization/Repository" />
+          <button class="ml-1 btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+
+      <ul class="navbar-nav ml-auto">
+        @if( session('user') === null )
+          <li class="nav-item">
+            <a class="btn btn-outline-primary" href="{{ route('login') }}">Login</a>
+          </li>
+        @else
+          <li class="nav-item">
+            <span class="ml-1 text-dark navbar-brand">{{ session('user')['name'] }}</span>
+          </li>
+          <li class="nav-item">
+            <a class="ml-1 btn btn-outline-primary" href="{{ route('repository.index') }}">Repository</a>
+          </li>
+          <li class="nav-item">
+            <a class="ml-1 btn btn-outline-danger" href="{{ route('logout') }}">Logout</a>
+          </li>
+        @endif
+      </ul>
+    </div>
+
+  </nav>
+
   @yield('content')
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
