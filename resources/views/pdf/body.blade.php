@@ -8,10 +8,17 @@
     max-width: 100%;
     height: auto;
   }
-  pre, code {
+  pre {
     font-family: ipag, serif;
-    white-space: pre;
-    font-size: 0.9em;
+    padding: 8px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 6px;
+  }
+  code {
+    font-family: ipag, serif;
   }
 </style>
 <body>
