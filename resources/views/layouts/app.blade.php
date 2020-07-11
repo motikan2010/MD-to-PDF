@@ -17,7 +17,7 @@
     <a href="{{ route('index') }}" class="my-0 mr-md-auto navbar-brand d-flex"><strong>{{ config('app.name', '') }}</strong></a>
 
     <div class="navbar-collapse collapse">
-      <div class="ml-5 col-md-8">
+      <div class="ml-5 col-md-7">
         <form class="form-inline mx-2 my-auto d-inline" action="{{ route('repository.detail') }}">
           <input class="form-control w-75" type="text" name="r" value="{{ app('request')->input('r') }}" placeholder="GitHub Organization/Repository" />
           <button class="ml-1 btn btn-outline-success" type="submit">Search</button>
