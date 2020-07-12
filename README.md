@@ -1,12 +1,33 @@
 # MD to PDF
 
-##### Support Japanese in PDF
+## Install
 
-- Download IPA Font(https://ipafont.ipa.go.jp/old/ipafont/download.html)
-- [dompdf/utils: Utility scripts for use with the dompdf library](https://github.com/dompdf/utils)
+### Support Japanese
+
+```
+// Download IPA font
+$ wget https://ipafont.ipa.go.jp/IPAfont/ipag00303.zip
+$ unzip ipag00303.zip
+
+// Download util for setting font
+$ https://github.com/dompdf/utils/archive/master.zip
+$ unzip master.zip
+
+// Setting font
+$ php utils-master/load_font.php ipag ipag00303/ipag.ttf
+
+// Clear
+$ rm -rf ipag00303.zip master.zip utils-master ipag00303
+```
 
 ## Memo
+
+### Core third party library
 
 - Markdown to HTML ([michelf/php-markdown](https://github.com/michelf/php-markdown]))
 - HTML to PDF ([dompdf/dompdf](https://github.com/dompdf/dompdf))
 
+### Support Japanese in PDF
+
+- Download IPA Font(https://ipafont.ipa.go.jp/old/ipafont/download.html)
+- [dompdf/utils: Utility scripts for use with the dompdf library](https://github.com/dompdf/utils)
