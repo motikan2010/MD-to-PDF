@@ -1,5 +1,10 @@
 # MD to PDF
 
+## Usage
+
+![usage1](https://user-images.githubusercontent.com/3177297/87238657-6d5d3f00-c440-11ea-99dc-8d0b09bc2232.png)
+![usage2](https://user-images.githubusercontent.com/3177297/87238655-6c2c1200-c440-11ea-8f76-947b36d3b6c3.png)
+
 ## Install
 
 ### Support Japanese
