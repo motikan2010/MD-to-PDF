@@ -2,10 +2,16 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
+@if ( env('APP_DESCRIPTION') )
+  <meta name="description" content="{{ env('APP_DESCRIPTION') }}">
+@endif
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ config('app.name', '') }}</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+@if ( env('GOOGLE_ANALYTICS_TAG') )
+  {!! env('GOOGLE_ANALYTICS_TAG') !!}
+@endif
 </head>
 <body>
 @if( env('GITHUB_RIBBON') )
