@@ -2,7 +2,7 @@
   <div class="card-deck box-shadow mb-3">
     <div class="card mb-4 box-shadow">
       <div class="card-header">
-        <button class="btn btn-primary" v-on:click="convertMarkdown">変換</button>
+        <button class="btn btn-primary" v-on:click="convertMarkdown">Convert to PDF</button>
       </div>
       <div class="card-body">
         <TreeItem :item="treeData" :isInitOpen="true" @add-item="addItem" />
