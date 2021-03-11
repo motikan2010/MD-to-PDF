@@ -1,5 +1,7 @@
 # MD to PDF
 
+ Convert Markdown files in GitHub to PDF file.
+
 ## Usage
 
 ![usage1](https://user-images.githubusercontent.com/3177297/87242278-2bdf8a80-c466-11ea-951e-425175ef8053.png)
@@ -36,3 +38,16 @@ $ rm -rf ipag00303.zip master.zip utils-master ipag00303
 
 - Download IPA Font(https://ipafont.ipa.go.jp/old/ipafont/download.html)
 - [dompdf/utils: Utility scripts for use with the dompdf library](https://github.com/dompdf/utils)
+
+### Develop
+
+```
+$ composer install
+$ php artisan key:generate
+$ php artisan serve
+```
+
+```
+$ npm install
+$ npm run production
+```
