@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "dompdf/dompdf": "^0.8.5",
+        "dompdf/dompdf": "^2.0.0",
         "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
